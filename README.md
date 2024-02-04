@@ -106,7 +106,7 @@ const MegaHash = require('megahash');
 Here is a simple example:
 
 ```js
-var hash = new MegaHash();
+let hash = new MegaHash();
 
 hash.set( "hello", "there" );
 console.log( hash.get("hello") );
@@ -126,7 +126,7 @@ hash.set( "hello", "REPLACED!" );
 To fetch an existing value given a key, use the [get()](#get) method.  This accepts a single argument, the key:
 
 ```js
-var value = hash.get("hello");
+let value = hash.get("hello");
 ```
 
 The following data types are supported for values:
@@ -136,11 +136,11 @@ The following data types are supported for values:
 Buffers are the internal type used by the hash, and will give you the best performance.  This is true for both keys and values, so if you can pass them in as Buffers, all the better.  All other data types besides buffers are auto-converted.  Example use:
 
 ```js
-var buf = Buffer.allocSafe(32);
+let buf = Buffer.allocSafe(32);
 buf.write("Hi");
 hash.set( "mybuf", buf );
 
-var bufCopy = hash.get("mybuf");
+let bufCopy = hash.get("mybuf");
 ```
 
 It should be noted here that memory is **copied** when it enters and exits MegaHash from Node.js land.  So if you insert a buffer and then retrieve it, you'll get a brand new buffer with a fresh copy of the data.
@@ -163,7 +163,7 @@ Object values are automatically serialized to JSON, then converted to buffers us
 ```js
 hash.set( "user1", { name: "Joe", age: 43 } );
 
-var user = hash.get("user1");
+let user = hash.get("user1");
 console.log( user.name, user.age );
 ```
 
@@ -173,7 +173,7 @@ Number values are auto-converted to double-precision floating point decimals, an
 
 ```js
 hash.set( 1, 9.99999999 );
-var value = hash.get(1);
+let value = hash.get(1);
 ```
 
 ### BigInts
@@ -182,7 +182,7 @@ MegaHash has support for [BigInt](https://developer.mozilla.org/en-US/docs/Web/J
 
 ```js
 hash.set( "big", 9007199254740993n );
-var value = hash.get("big");
+let value = hash.get("big");
 ```
 
 Note that BigInts are only supported in Node 10.4.0 and up.
@@ -193,7 +193,7 @@ Booleans are internally stored as a 1-byte buffer containing `0` or `1`.  These 
 
 ```js
 hash.set("bool1", true);
-var test = hash.get("bool1");
+let test = hash.get("bool1");
 ```
 
 ### Null
@@ -226,7 +226,7 @@ hash.clear();
 To iterate over keys in the hash, you can use the [nextKey()](#nextkey) method.  Without an argument, this will give you the "first" key in undefined order.  If you pass it the previous key, it will give you the next one, until finally `undefined` is returned.  Example:
 
 ```js
-var key = hash.nextKey();
+let key = hash.nextKey();
 while (key) {
 	// do something with key
 	key = hash.nextKey(key);
@@ -240,7 +240,7 @@ Please note that if new keys are added to the hash while an iteration is in prog
 If a hash operation fails (i.e. out of memory), then [set()](#set) will return `0`.  You can check for this and bubble up your own error.  Example:
 
 ```js
-var result = hash.set( "hello", "there" );
+let result = hash.set( "hello", "there" );
 if (!result) {
 	throw new Error("Failed to write to MegaHash: Out of memory");
 }
@@ -251,7 +251,7 @@ if (!result) {
 To get current statistics about the hash, including the number of keys, raw data size, and other internals, call [stats()](#stats).  Example:
 
 ```js
-var stats = hash.stats();
+let stats = hash.stats();
 console.log(stats);
 ```
 
@@ -312,7 +312,7 @@ MIXED get( KEY )
 Fetch a value given a key.  Since the value data type is stored internally as a flag with the raw data, this is used to convert the buffer back to the original type when the key is fetched.  So if you store a string then fetch it, it'll come back as a string.  Example use:
 
 ```js
-var value = hash.get("key1");
+let value = hash.get("key1");
 ```
 
 If the key is not found, `get()` will return `undefined`.
@@ -375,7 +375,7 @@ STRING nextKey( KEY )
 Without an argument, fetch the *first* key in the hash, in undefined order.  With a key specified, fetch the *next* key, also in undefined order.  Returns `undefined` when the end of the hash has been reached.  Example use:
 
 ```js
-var key = hash.nextKey();
+let key = hash.nextKey();
 while (key) {
 	// do something with key
 	key = hash.nextKey(key);
@@ -391,7 +391,7 @@ NUMBER length()
 Return the total number of keys currently in the hash.  This is very fast, as it does not have to iterate over the keys (an internal counter is kept up to date on each set/delete).  Example use:
 
 ```js
-var numKeys = hash.length();
+let numKeys = hash.length();
 ```
 
 ## stats
@@ -403,7 +403,7 @@ OBJECT stats()
 Fetch statistics about the current hash, including the number of keys, total data size in memory, and more.  The return value is a native Node.js object with several properties populated.  Example use:
 
 ```js
-var stats = hash.stats();
+let stats = hash.stats();
 
 // Example stats:
 {
